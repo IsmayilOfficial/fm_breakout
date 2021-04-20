@@ -6,7 +6,9 @@ const boardWidth = 560
 const userStart = [230 , 10 ] 
 let currentPosition = userStart
 
-//my block
+const ballStart = [230,48]
+let ballCurrentPosition = ballStart
+//block
 class Block {
     constructor(xAxis, yAxis) {
       this.bottomLeft = [xAxis, yAxis]
@@ -68,23 +70,22 @@ function moveUser(e){
             if (currentPosition[0]>0) {
                 currentPosition[0] -=10
                 drawUser()
-            }
-
-            
+            }   
         }
-            break;
+        break;
         case 'ArrowRight':{
-            if (currentPosition[0]<boardWidth) {
+            if (currentPosition[0]<boardWidth-blockWidth) {
                     currentPosition[0] +=10
                     drawUser()
-            }
-                
-                
+            }      
         }
-            break;
+        break;
     }
-
-    
 }
-
 document.addEventListener('keydown',moveUser)
+// add ball
+const ball = document.createElement('div')
+ball.classList.add('ball')
+ball.style.left = ballCurrentPosition[0] + 'px'
+ball.style.bottom = ballCurrentPosition[1] + 'px'
+grid.appendChild(ball)
