@@ -6,13 +6,13 @@ const boardWidth = 560
 const boardHeight = 300
 const userStart = [230 , 10 ] 
 let currentPosition = userStart
-const ballDiametr = 20
-
+const ballDiameter = 20
 const ballStart = [270,48]
 let ballCurrentPosition = ballStart
 let timerId
 let xDirection = -2
 let yDirection = 2 
+let score = 0 
 //block
 class Block {
     constructor(xAxis, yAxis) {
@@ -110,10 +110,42 @@ timerId = setInterval(moveBall,30)
 
 //check for collissions
 function checkForCollissions() {
+    //check for block collision
+  for (let i = 0; i < blocks.length; i++){
+    if
+    (
+      (ballCurrentPosition[0] > blocks[i].bottomLeft[0] && ballCurrentPosition[0] < blocks[i].bottomRight[0]) &&
+      ((ballCurrentPosition[1] + ballDiameter) > blocks[i].bottomLeft[1] && ballCurrentPosition[1] < blocks[i].topLeft[1]) 
+    )
+      {
+      const allBlocks = Array.from(document.querySelectorAll('.block'))
+      allBlocks[i].classList.remove('block')
+      blocks.splice(i,1)
+      changeDirection()   
+      score++
+      scoreDisplay.innerHTML = score
+      if (blocks.length == 0) {
+        scoreDisplay.innerHTML = 'You Win!'
+        clearInterval(timerId)
+        document.removeEventListener('keydown', moveUser)
+      }
+    }
+  }
+
+  //check for user collision
+  if
+  (
+    (ballCurrentPosition[0] > currentPosition[0] && ballCurrentPosition[0] < currentPosition[0] + blockWidth) &&
+    (ballCurrentPosition[1] > currentPosition[1] && ballCurrentPosition[1] < currentPosition[1] + blockHeight ) 
+  )
+  {
+    changeDirection()
+  }
+
     //check for wall collissions
     if (
-        ballCurrentPosition[0] >= (boardWidth - ballDiametr) || 
-        ballCurrentPosition[1] >= (boardHeight - ballDiametr) ||
+        ballCurrentPosition[0] >= (boardWidth - ballDiameter) || 
+        ballCurrentPosition[1] >= (boardHeight - ballDiameter) ||
         ballCurrentPosition[0] <= 0
         ) {
         changeDirection()
